@@ -45,7 +45,15 @@ void init_network_driver(NetworkDevice *nd,
 						 unsigned long mem_length, 
 						 FreePacketDescriptorStore **fpds_ptr) 
 {
-	PacketDescriptor *pd; //To catch packets as soon as they send.
+	//Initiliaze Device
+	netdev = nd; //Assign network device from argument.
+
+	//Initialize Threads before creation
+	pthread_t sendThread;
+	pthread_t receiveThread;
+
+	//To catch packets as soon as they send.
+	PacketDescriptor *pd;
 
     /* Create Free Packet Descriptor Store */
 	*fpds_ptr = create_fpds();
@@ -65,13 +73,6 @@ void init_network_driver(NetworkDevice *nd,
 		blocking_get_pd(*fpds_ptr, &pd);
 		blockingWriteBB(recPool, pd);
 	}
-
-	//Initiliaze Device
-	netdev = nd; //Assign network device from argument.
-
-	//Initialize Threads before creation
-	pthread_t sendThread;
-	pthread_t receiveThread;
 
     /* Create Threads */
     pthread_create(&sendThread, NULL, send_thread, NULL);
