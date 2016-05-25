@@ -130,7 +130,7 @@ static void* receive_thread()
 			register_receiving_packetdescriptor(netdev, current_pd); //Tell the netdev that current_pd is empty
 			procID = packet_descriptor_get_pid(filled_pd); //Find process ID for indexing purposes (0-10)			    	
 			if (nonblockingWriteBB(bufferArray[procID], filled_pd) != 1) { //Data from packet fails to write
-				DIAGNOSTICS("[DRIVER> Warning: Application(%u) Packet Store full, discarding data.\n", procID);
+				DIAGNOSTICS("[DRIVER> Warning: bufferArray(%u) - Packet Store full, discarding data.\n", procID);
 				if (nonblocking_put_pd(fpds, filled_pd) != 1) { //Can't return packet to fpds
 			    	DIAGNOSTICS("[DRIVER> Error? Cannot return Packet Descriptor to store\n");
 				}
