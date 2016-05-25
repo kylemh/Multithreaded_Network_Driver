@@ -32,50 +32,42 @@ static void* receive_thread();
 
 #define BUFFERSIZE 10
 
-int receiveCount = 0;
-int sendCount = 0;
-
 FreePacketDescriptorStore *free_pd_store;
 NetworkDevice *netdev;
-BoundedBuffer *applicationBuffers[MAX_PID];
-BoundedBuffer *sendPool;
+BoundedBuffer *applicationBuffer[MAX_PID];
+BoundedBuffer *sendQueue;
 BoundedBuffer *recPool;
 
-
-// definition[s] of functcion[s] required for your thread[s] */
 void init_network_driver(NetworkDevice *nd, 
 						 void *mem_start, 
 						 unsigned long mem_length, 
 						 FreePacketDescriptorStore **fpds_ptr) 
 {
-	DIAGNOSTICS("Info: Constructing network device...\n");
+	//Initiliaze Device
 	netdev = nd; //Assign network device from argument.
-	DIAGNOSTICS("Info: Constructed network device.\n");
 
-	DIAGNOSTICS("Info: Initialising network driver...");
 	pthread_t sendThread;
 	pthread_t receiveThread;
 
-    /* create Free Packet Descriptor Store */
+    /* Create Free Packet Descriptor Store */
 	free_pd_store = create_fpds();
 	*fpds_ptr = free_pd_store;
-	DIAGNOSTICS("Info: Allocated memory for packet descriptor contents");
 
-    /* load FPDS with packet descriptors constructed from mem_start/mem_length */
+    /* Load FPDS with packet descriptors constructed from mem_start/mem_length */
 	create_free_packet_descriptors(free_pd_store, mem_start, mem_length);
 
-    /* create any buffers required by your thread[s] */ 
+    /* Create buffers required by your thread[s] */ 
 	for(int i = 0; i <= (MAX_PID + 1); i++) {
-        applicationBuffers[i] = createBB(BUFFERSIZE);
+        applicationBuffer[i] = createBB(BUFFERSIZE);
 	}
-	sendPool = createBB(BUFFERSIZE);
+	sendQueue = createBB(BUFFERSIZE);
 	recPool = createBB(BUFFERSIZE);
 
-    /* create any threads you require for your implementation */
+    /* Create Threads */
     pthread_create(&sendThread, NULL, send_thread, NULL);
 	pthread_create(&receiveThread, NULL, receive_thread, NULL);
 
-    /* return the FPDS to the code that called you */
+    /* Return the FPDS to the code that called it */
 	destroy_fpds(free_pd_store);
 }
 
@@ -86,16 +78,20 @@ static void* send_thread()
 {
 	PacketDescriptor *temppd;
 	while(1) {
-		temppd = (PacketDescriptor)blockingReadBB(sendPool);
-
-		for(int i = 0; i < 5; i++) { // Attempt to send 5 times
+		temppd = (PacketDescriptor*)blockingReadBB(sendQueue);
+		int sendLimit = 5; //Arbitrarily set
+		for(int i = 0; i < sendLimit; i++) { // Attempt to send 5 times
 			if((send_packet(netdev, temppd)) == 1) { // If received, break.
 				DIAGNOSTICS("[DRIVER> Info: Sent a packet after %d tries", i);
 				break;			
 			}
 			usleep(3);
 		}
-		blocking_put_pd(free_pd_store, temppd);
+		if (nonblockingWriteBB(recPool, temppd) != 1) {
+			if (nonblocking_put_pd(free_pd_store, temppd) != 1) {
+				DIAGNOSTICS("DRIVER> Error? Failed to return Packet Descriptor to store");
+			}
+		}
 	}
 	free(temppd);
 	return NULL;
@@ -106,30 +102,43 @@ static void* send_thread()
  */
 static void* receive_thread()
 {
-	//TODO: Try to get from pool first, else get from store
-	PacketDescriptor *temppd;
-	while(1) {
-		if((nonblocking_get_pd(free_pd_store, &temppd)) == 1) { // Packet Descriptor acquired from free_pd_store
-			init_packet_descriptor(&temppd); // Reset packet descriptor before registering it to netdev
-			register_receiving_packetdescriptor(netdev, &temppd); // Tell device to register given packet
+	PacketDescriptor* current_pd;
+	PacketDescriptor* filled_pd;
+    PID procID;
 
-			await_incoming_packet(netdev); // Await connection confirmation from netdev
+    /* First, receive the thread as fast as possible to allow work to continue */
+    blocking_get_pd(free_pd_store, &current_pd); // Receive and block to handle other threads/packets
+    init_packet_descriptor(&current_pd); // Reset packet descriptor before registering it to device.
+    register_receiving_packetdescriptor(netdev, &current_pd); //Register the packet with the device.
+    await_incoming_packet(netdev); //Waits until pd filled with data.
 
-			PID packetIndex = packet_descriptor_get_pid(&temppd); 
-			if((nonblockingWriteBB(applicationBuffers[packetIndex], temppd)) == 1) { //If packet writes...
-				//
-			} else {
-				while(1) {
-					if ((nonblockingWriteBB(applicationBuffers[packetIndex], temppd)) == 1) break; // Write successful - move on.
-					if ((nonblocking_put_pd(free_pd_store, temppd)) == 1) break; // Give packet back to fpds
-				}
+    /* Thread receival complete: Handle PD */
+    while(1) {
+        filled_pd = current_pd; //Packet Descriptor is now filled.
+		if (nonblockingReadBB(recPool, &current_pd) != 1) { //If there's nothing waiting in the receive pool
+			if (nonblocking_get_packet(free_pd_store, &current_pd) != 1) { //If we fail to get pd from fpds
+				DIAGNOSTICS("DRIVER> Error? Cannot acquire Packet Descriptor.");
 			}
+		    init_packet_descriptor(&current_pd); //Reset pd before registering it to netdev
+		    register_receiving_packetdescriptor(netdev, &current_pd); //Register packet with netdev
+	        procID = packet_descriptor_get_pid(&filled_pd); //Find PID for Indexing
+		    if (nonblockingWriteBB(applicationBuffer[procID], filled_pd) != 1) {
+				DIAGNOSTICS("[DRIVER> Warning: Application(%u) Packet Store full, discarding data.\n", procID);
+				if (nonblockingWriteBB(recPool, filled_pd) != 1) { //Can't get the packet from the receive pool...
+					if (nonblocking_put_pd(free_pd_store, filled_pd) != 1) { //Can't return packet to fpds
+				    	DIAGNOSTICS("[DRIVER> Error? Cannot return Packet Descriptor to store\n");
+					}
+				}
+				
+		    }
 		} else {
-			DIAGNOSTICS("[Device> packet receival failed.");
+		    printf("[DRIVER> Warning: No replacement Packet Descriptor, discarding data.\n");
+		    current_pd = filled_pd;
+	            init_packet_descriptor(&current_pd);
+	            register_receiving_packetdescriptor(netdev, &current_pd);
 		}
-	}
-	free(temppd);
-	return NULL;
+    }
+    return NULL;
 }
 
 /* 
@@ -138,7 +147,7 @@ static void* receive_thread()
  */
 void blocking_send_packet(PacketDescriptor *pd) 
 {
-	blockingWriteBB(sendPool, pd);
+	blockingWriteBB(sendQueue, pd);
 	return;   
 } 
 
@@ -148,7 +157,7 @@ void blocking_send_packet(PacketDescriptor *pd)
  */
 int nonblocking_send_packet(PacketDescriptor *pd) 
 {
-	return nonblockingWriteBB(sendPool, pd);
+	return nonblockingWriteBB(sendQueue, pd);
 } 
 
 /* 
@@ -157,7 +166,7 @@ int nonblocking_send_packet(PacketDescriptor *pd)
  */
 void blocking_get_packet(PacketDescriptor **pd, PID pid) 
 {
-	*pd = blockingReadBB(recPool[pid]);
+	*pd = blockingReadBB(applicationBuffer[pid]);
 	return;
 } 
 
@@ -168,5 +177,5 @@ void blocking_get_packet(PacketDescriptor **pd, PID pid)
  */
 int nonblocking_get_packet(PacketDescriptor **pd, PID pid) 
 {
-	return nonblockingReadBB(recPool[pid], pd);
+	return nonblockingReadBB(applicationBuffer[pid], pd);
 }
