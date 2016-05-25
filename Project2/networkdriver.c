@@ -86,7 +86,7 @@ void init_network_driver(NetworkDevice *nd,
  */
 static void* send_thread()
 {
-	PacketDescriptor *temppd;
+	PacketDescriptor* temppd;
 	while (1) {
 		temppd = (PacketDescriptor*)blockingReadBB(sendQueue);
 		int sendLimit = 5; //Arbitrarily set
