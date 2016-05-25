@@ -66,12 +66,12 @@ void init_network_driver(NetworkDevice *nd,
     /* Create buffers required by your thread[s] */ 
     int i;
     sendQueue = createBB(BUFFERSIZE);
-	for(i = 0; i <= MAX_PID; i++) {
+	for (i = 0; i <= MAX_PID; i++) {
         bufferArray[i] = createBB(RECIEVE_BUFFERSIZE);
 	}
 	recPool = createBB(RECPOOLSIZE);
-	for(i = 0; i < RECPOOLSIZE; i++) {
-		blocking_get_pd(fpds, &pd);
+	for (i = 0; i < RECPOOLSIZE; i++) {
+		blocking_get_pd(fpds, **pd);
 		blockingWriteBB(recPool, pd);
 	}
 
@@ -87,19 +87,19 @@ void init_network_driver(NetworkDevice *nd,
 static void* send_thread()
 {
 	PacketDescriptor *temppd;
-	while(1) {
+	while (1) {
 		temppd = (PacketDescriptor*)blockingReadBB(sendQueue);
 		int sendLimit = 5; //Arbitrarily set
 		int i;
-		for(i = 0; i < sendLimit; i++) { // Attempt to send 5 times
-			if((send_packet(netdev, temppd)) == 1) { // If received, break.
+		for (i = 0; i < sendLimit; i++) { // Attempt to send 5 times
+			if ((send_packet(netdev, temppd)) == 1) { // If received, break.
 				DIAGNOSTICS("[DRIVER> Info: Sent a packet after %d tries", i);
 				break;			
 			}
 			//Potentially need a way to wait before next send attempt
 		}
 		if (nonblockingWriteBB(recPool, temppd) != 1) {
-			if (nonblocking_put_pd(*fpds_ptr, temppd) != 1) {
+			if (nonblocking_put_pd(fpds, temppd) != 1) {
 				DIAGNOSTICS("DRIVER> Error? Failed to return Packet Descriptor to store");
 			}
 		}
@@ -112,23 +112,23 @@ static void* send_thread()
  */
 static void* receive_thread()
 {
-	PacketDescriptor* current_pd;
-	PacketDescriptor* filled_pd;
+	PacketDescriptor *current_pd;
+	PacketDescriptor *filled_pd;
     PID procID;
 	
     /* First, receive the thread as fast as possible to allow work to continue */
-    blocking_get_pd(fpds, &current_pd); // Prepare packet from store
-    init_packet_descriptor(&current_pd); // Reset packet descriptor before registering it to device.
-    register_receiving_packetdescriptor(netdev, &current_pd); //Register the packet with the device.
+    blocking_get_pd(fpds, **current_pd); // Prepare packet from store
+    init_packet_descriptor(*current_pd); // Reset packet descriptor before registering it to device.
+    register_receiving_packetdescriptor(netdev, *current_pd); //Register the packet with the device.
     await_incoming_packet(netdev); //Waits until pd filled with data
 
     /* Thread receival complete: Handle PD */
     while(1) {
         filled_pd = current_pd; //Packet Descriptor is now filled.
-		if (nonblockingReadBB(recPool, &current_pd) != 1) { //If there's nothing waiting in the receive pool
-		    init_packet_descriptor(&current_pd); //Resets current_pd - it is now empty
-			register_receiving_packetdescriptor(netdev, &current_pd); //Tell the netdev that current_pd is empty
-			procID = packet_descriptor_get_pid(&filled_pd); //Find process ID for indexing purposes (0-10)			    	
+		if (nonblockingReadBB(recPool, *current_pd) == 1) { //If there's nothing waiting in the receive pool
+		    init_packet_descriptor(*current_pd); //Resets current_pd - it is now empty
+			register_receiving_packetdescriptor(netdev, *current_pd); //Tell the netdev that current_pd is empty
+			procID = packet_descriptor_get_pid(*filled_pd); //Find process ID for indexing purposes (0-10)			    	
 			if (nonblockingWriteBB(bufferArray[procID], filled_pd) != 1) { //Data from packet fails to write
 				DIAGNOSTICS("[DRIVER> Warning: Application(%u) Packet Store full, discarding data.\n", procID);
 				if (nonblocking_put_pd(fpds, filled_pd) != 1) { //Can't return packet to fpds
@@ -138,8 +138,8 @@ static void* receive_thread()
 		} else {
 		    printf("[DRIVER> Warning: No replacement Packet Descriptor, discarding data.\n");
 		    current_pd = filled_pd;
-            init_packet_descriptor(&current_pd);
-            register_receiving_packetdescriptor(netdev, &current_pd);
+            init_packet_descriptor(*current_pd);
+            register_receiving_packetdescriptor(netdev, *current_pd);
 		}
     }
     return NULL;
