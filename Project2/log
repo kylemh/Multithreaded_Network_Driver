@@ -1,318 +1,91 @@
-Info: Allocated memory for packet descriptor contents
-Info: Constructing network device...
-Info: Constructed network device.
-Info: Initialising network driver...
-Info: built 36 descriptors (of length 64) from 2304 bytes of memory
-Driver: 4 packet descriptors in receiver pool
-Driver: 2 received packet descriptors can be queued for each of 11 applications
-Driver: 10 packet descriptors can be queued for sending
-Info: Initialised network driver.
-Info: Constructing fake applications...
-Info: Constructed fake applications.
-Info: receiver for application 1 is running.
-Info: sender for application 2 is running.
-Info: receiver for application 2 is running.
-Info: sender for application 3 is running.
-Info: sender for application 1 is running.
-Info: receiver for application 3 is running.
-Info: sender for application 4 is running.
-Info: receiver for application 4 is running.
-Info: sender for application 5 is running.
-Info: receiver for application 5 is running.
-Info: receiver for application 0 is running.
-Info: sender for application 6 is running.
-Info: receiver for application 6 is running.
-Info: sender for application 7 is running.
-Info: receiver for application 7 is running.
-Info: sender for application 8 is running.
-Info: receiver for application 8 is running.
-Info: sender for application 9 is running.
-Info: sender for application 0 is running.
-Info: receiver for application 9 is running.
-Info: sender for application 10 is running.
-Info: receiver for application 10 is running.
-[Device> Info: network device ready, pausing prior to input...
-Info: application 1 has acquired a packet descriptor.
-Info: application 1 is sending a packet descriptor.
-Info: application 1 has sent a packet descriptor (blocking).
-Info: application 8 has acquired a packet descriptor.
-Info: application 8 is sending a packet descriptor.
-Info: application 8 has sent a packet descriptor (blocking).
-Info: application 9 has acquired a packet descriptor.
-Info: application 9 is sending a packet descriptor.
-Info: application 9 has sent a packet descriptor (nonblocking).
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 2 has acquired a packet descriptor.
-Info: application 2 is sending a packet descriptor.
-Info: application 2 has sent a packet descriptor (nonblocking).
-Info: application 3 has acquired a packet descriptor.
-Info: application 3 is sending a packet descriptor.
-Info: application 3 has sent a packet descriptor (blocking).
-Info: application 4 has acquired a packet descriptor.
-Info: application 4 is sending a packet descriptor.
-Info: application 4 has sent a packet descriptor (blocking).
-Info: application 7 has acquired a packet descriptor.
-Info: application 7 is sending a packet descriptor.
-Info: application 7 has sent a packet descriptor (nonblocking).
-Info: application 6 has acquired a packet descriptor.
-Info: application 6 is sending a packet descriptor.
-Info: application 6 has sent a packet descriptor (nonblocking).
-Info: application 0 has acquired a packet descriptor.
-Info: application 0 is sending a packet descriptor.
-Info: application 0 has sent a packet descriptor (blocking).
-Info: application 9 has acquired a packet descriptor.
-Info: application 9 is sending a packet descriptor.
-Info: application 9 has sent a packet descriptor (blocking).
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 5 has acquired a packet descriptor.
-Info: application 5 is sending a packet descriptor.
-Info: application 5 has sent a packet descriptor (nonblocking).
-Info: application 10 has acquired a packet descriptor.
-Info: application 10 is sending a packet descriptor.
-Info: application 10 has sent a packet descriptor (blocking).
-Info: application 4 has acquired a packet descriptor.
-Info: application 4 is sending a packet descriptor.
-Info: application 4 has sent a packet descriptor (nonblocking).
-Info: application 9 has acquired a packet descriptor.
-Info: application 9 is sending a packet descriptor.
-Info: application 9 failed to send a packet descriptor (nonblocking).
-Info: application 9 (sender) has released a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 2 has acquired a packet descriptor.
-Info: application 2 is sending a packet descriptor.
-Info: application 2 has sent a packet descriptor (blocking).
-Info: application 8 has acquired a packet descriptor.
-Info: application 8 is sending a packet descriptor.
-Info: application 8 has sent a packet descriptor (blocking).
-Info: application 1 has acquired a packet descriptor.
-Info: application 1 is sending a packet descriptor.
-Info: application 1 failed to send a packet descriptor (nonblocking).
-Info: application 1 (sender) has released a packet descriptor.
-Info: application 6 has acquired a packet descriptor.
-Info: application 6 is sending a packet descriptor.
-Info: application 6 failed to send a packet descriptor (nonblocking).
-Info: application 6 (sender) has released a packet descriptor.
-Info: application 0 has acquired a packet descriptor.
-Info: application 0 is sending a packet descriptor.
-Info: application 0 failed to send a packet descriptor (nonblocking).
-Info: application 0 (sender) has released a packet descriptor.
-Info: application 9 has acquired a packet descriptor.
-Info: application 9 is sending a packet descriptor.
-Info: application 9 failed to send a packet descriptor (nonblocking).
-Info: application 9 (sender) has released a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-[Device> Info: network input starting...
-Info: application 3 has acquired a packet descriptor.
-Info: application 3 is sending a packet descriptor.
-Info: application 3 has sent a packet descriptor (nonblocking).
-Info: application 7 has acquired a packet descriptor.
-Info: application 7 is sending a packet descriptor.
-Info: application 10 has acquired a packet descriptor.
-Info: application 10 is sending a packet descriptor.
-Info: application 4 has acquired a packet descriptor.
-Info: application 4 is sending a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 7 has sent a packet descriptor (blocking).
-[Device> Packet received for PID 6
-Info: application 6 has received a packet.
-Info: application 6 has released a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 10 has sent a packet descriptor (blocking).
-Info: application 5 has acquired a packet descriptor.
-Info: application 5 is sending a packet descriptor.
-Info: application 0 has acquired a packet descriptor.
-Info: application 0 is sending a packet descriptor.
-Info: application 7 has acquired a packet descriptor.
-Info: application 7 is sending a packet descriptor.
-Info: application 7 failed to send a packet descriptor (nonblocking).
-Info: application 7 (sender) has released a packet descriptor.
-[Device> Packet received for PID 9
-Info: application 9 has received a packet.
-Info: application 9 has released a packet descriptor.
-[Device> Packet received for PID 0
-Info: application 0 has received a packet.
-Info: application 0 has released a packet descriptor.
-[Device> Packet received for PID 1
-Info: application 1 has received a packet.
-Info: application 1 has released a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 4 has sent a packet descriptor (blocking).
-Info: application 10 has acquired a packet descriptor.
-Info: application 10 is sending a packet descriptor.
-Info: application 3 has acquired a packet descriptor.
-Info: application 3 is sending a packet descriptor.
-Info: application 3 failed to send a packet descriptor (nonblocking).
-Info: application 3 (sender) has released a packet descriptor.
-Info: application 8 has acquired a packet descriptor.
-Info: application 8 is sending a packet descriptor.
-Info: application 8 failed to send a packet descriptor (nonblocking).
-Info: application 8 (sender) has released a packet descriptor.
-Info: application 2 has acquired a packet descriptor.
-Info: application 2 is sending a packet descriptor.
-Info: application 2 failed to send a packet descriptor (nonblocking).
-Info: application 2 (sender) has released a packet descriptor.
-Info: application 1 has acquired a packet descriptor.
-Info: application 1 is sending a packet descriptor.
-Info: application 6 has acquired a packet descriptor.
-Info: application 6 is sending a packet descriptor.
-Info: application 6 failed to send a packet descriptor (nonblocking).
-Info: application 6 (sender) has released a packet descriptor.
-Info: application 9 has acquired a packet descriptor.
-Info: application 9 is sending a packet descriptor.
-Info: application 9 failed to send a packet descriptor (nonblocking).
-Info: application 9 (sender) has released a packet descriptor.
-Info: application 7 has acquired a packet descriptor.
-Info: application 7 is sending a packet descriptor.
-Info: application 7 failed to send a packet descriptor (nonblocking).
-Info: application 7 (sender) has released a packet descriptor.
-[Device> Packet received for PID 9
-Info: application 9 has received a packet.
-Info: application 9 has released a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 5 has sent a packet descriptor (blocking).
-[Device> Packet received for PID 5
-Info: application 5 has received a packet.
-Info: application 5 has released a packet descriptor.
-Info: application 3 has acquired a packet descriptor.
-Info: application 3 is sending a packet descriptor.
-Info: application 2 has acquired a packet descriptor.
-Info: application 2 is sending a packet descriptor.
-Info: application 2 failed to send a packet descriptor (nonblocking).
-Info: application 2 (sender) has released a packet descriptor.
-Info: application 9 has acquired a packet descriptor.
-Info: application 9 is sending a packet descriptor.
-Info: application 9 failed to send a packet descriptor (nonblocking).
-Info: application 9 (sender) has released a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 0 has sent a packet descriptor (blocking).
-Info: application 7 has acquired a packet descriptor.
-Info: application 7 is sending a packet descriptor.
-Info: application 7 failed to send a packet descriptor (nonblocking).
-Info: application 7 (sender) has released a packet descriptor.
-[Device> Packet received for PID 8
-Info: application 8 has received a packet.
-Info: application 8 has released a packet descriptor.
-Info: application 5 has acquired a packet descriptor.
-Info: application 5 is sending a packet descriptor.
-Info: application 5 failed to send a packet descriptor (nonblocking).
-Info: application 5 (sender) has released a packet descriptor.
-[Device> Packet received for PID 7
-Info: application 7 has received a packet.
-Info: application 7 has released a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 10 has sent a packet descriptor (blocking).
-Info: application 6 has acquired a packet descriptor.
-Info: application 6 is sending a packet descriptor.
-Info: application 7 has acquired a packet descriptor.
-Info: application 7 is sending a packet descriptor.
-Info: application 7 failed to send a packet descriptor (nonblocking).
-Info: application 7 (sender) has released a packet descriptor.
-[Device> Packet received for PID 4
-Info: application 4 has received a packet.
-Info: application 4 has released a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 1 has sent a packet descriptor (blocking).
-[Device> Packet received for PID 10
-Info: application 10 has received a packet.
-Info: application 10 has released a packet descriptor.
-Info: application 4 has acquired a packet descriptor.
-Info: application 4 is sending a packet descriptor.
-Info: application 10 has acquired a packet descriptor.
-Info: application 10 is sending a packet descriptor.
-Info: application 8 has acquired a packet descriptor.
-Info: application 8 is sending a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 3 has sent a packet descriptor (blocking).
-[Device> Packet received for PID 5
-Info: application 5 has received a packet.
-Info: application 5 has released a packet descriptor.
-Info: application 5 has acquired a packet descriptor.
-Info: application 5 is sending a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 6 has sent a packet descriptor (blocking).
-[Device> Packet received for PID 10
-Info: application 10 has received a packet.
-Info: application 10 has released a packet descriptor.
-Info: application 2 has acquired a packet descriptor.
-Info: application 2 is sending a packet descriptor.
-Info: application 9 has acquired a packet descriptor.
-Info: application 9 is sending a packet descriptor.
-Info: application 9 failed to send a packet descriptor (nonblocking).
-Info: application 9 (sender) has released a packet descriptor.
-Info: application 0 has acquired a packet descriptor.
-Info: application 0 is sending a packet descriptor.
-Info: application 3 has acquired a packet descriptor.
-Info: application 3 is sending a packet descriptor.
-Info: application 3 failed to send a packet descriptor (nonblocking).
-Info: application 3 (sender) has released a packet descriptor.
-Info: application 1 has acquired a packet descriptor.
-Info: application 1 is sending a packet descriptor.
-[Device> Packet received for PID 4
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 4 has sent a packet descriptor (blocking).
-Info: application 4 has received a packet.
-Info: application 4 has released a packet descriptor.
-[Device> Packet received for PID 7
-Info: application 7 has received a packet.
-Info: application 7 has released a packet descriptor.
-[Device> Packet received for PID 8
-Info: application 8 has received a packet.
-Info: application 8 has released a packet descriptor.
-Info: application 7 has acquired a packet descriptor.
-Info: application 7 is sending a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 10 has sent a packet descriptor (blocking).
-[Device> Packet received for PID 5
-Info: application 5 has received a packet.
-Info: application 5 has released a packet descriptor.
-[Device> Packet received for PID 7
-Info: application 7 has received a packet.
-Info: application 7 has released a packet descriptor.
-Info: application 4 has acquired a packet descriptor.
-Info: application 4 is sending a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 8 has sent a packet descriptor (blocking).
-Info: application 9 has acquired a packet descriptor.
-Info: application 9 is sending a packet descriptor.
-Info: application 9 failed to send a packet descriptor (nonblocking).
-Info: application 9 (sender) has released a packet descriptor.
-[Device> Packet received for PID 7
-Info: application 7 has received a packet.
-Info: application 7 has released a packet descriptor.
-[Device> Packet received for PID 9
-Info: application 9 has received a packet.
-Info: application 9 has released a packet descriptor.
-[Device> packet successfully sent.
-[DRIVER> Info: Sent a packet after 1 tries
-Info: application 5 has sent a packet descriptor (blocking).
-Info: application 6 has acquired a packet descriptor.
-Info: application 6 is sending a packet descriptor.
-Info: application 6 failed to send a packet descriptor (nonblocking).
-Info: application 6 (sender) has released a packet descriptor.
-[Device> Packet received for PID 0
-Info: application 0 has received a packet.
-Info: application 0 has released a packet descriptor.
-Info: application 3 has acquired a packet descriptor.
-Info: application 3 is sending a packet descriptor.
-[Device> Packet received for PID 2
-Info: application 2 has received a packet.
-Info: application 2 has released a packet descriptor.
-Info: application 10 has acquired a packet descriptor.
+cc -W -Wall -pedantic -g   -c -o networkdriver.o networkdriver.c
+networkdriver.c: In function ‘init_network_driver’:
+networkdriver.c:48:2: warning: C++ style comments are not allowed in ISO C90
+  //Initiliaze Device
+  ^
+networkdriver.c:48:2: warning: (this will be reported only once per input file)
+networkdriver.c:52:2: warning: ISO C90 forbids mixed declarations and code [-Wpedantic]
+  pthread_t sendThread;
+  ^
+networkdriver.c:62:2: warning: ISO C90 forbids mixed declarations and code [-Wpedantic]
+  int created;
+  ^
+networkdriver.c:66:5: warning: ISO C90 forbids mixed declarations and code [-Wpedantic]
+     int i;
+     ^
+networkdriver.c:62:6: warning: variable ‘created’ set but not used [-Wunused-but-set-variable]
+  int created;
+      ^
+networkdriver.c: In function ‘send_thread’:
+networkdriver.c:93:3: warning: ISO C90 forbids mixed declarations and code [-Wpedantic]
+   int sendLimit = 5; //Arbitrarily set
+   ^
+networkdriver.c: In function ‘receive_thread’:
+networkdriver.c:123:28: warning: passing argument 1 of ‘init_packet_descriptor’ from incompatible pointer type
+     init_packet_descriptor(&current_pd); // Reset packet descriptor before registering it to device.
+                            ^
+In file included from networkdriver.c:19:0:
+packetdescriptor.h:30:6: note: expected ‘struct PacketDescriptor *’ but argument is of type ‘struct PacketDescriptor **’
+ void init_packet_descriptor(PacketDescriptor *pd);
+      ^
+networkdriver.c:124:49: warning: passing argument 2 of ‘register_receiving_packetdescriptor’ from incompatible pointer type
+     register_receiving_packetdescriptor(netdev, &current_pd); //Register the packet with the device.
+                                                 ^
+In file included from networkdriver.c:24:0:
+networkdevice.h:38:6: note: expected ‘struct PacketDescriptor *’ but argument is of type ‘struct PacketDescriptor **’
+ void register_receiving_packetdescriptor(NetworkDevice *nd, PacketDescriptor *pd);
+      ^
+networkdriver.c:130:34: warning: passing argument 2 of ‘nonblockingReadBB’ from incompatible pointer type
+   if (nonblockingReadBB(recPool, &current_pd) != 1) { //If there's nothing waiting in the receive pool
+                                  ^
+In file included from networkdriver.c:27:0:
+BoundedBuffer.h:33:5: note: expected ‘void **’ but argument is of type ‘struct PacketDescriptor **’
+ int nonblockingReadBB(BoundedBuffer *bb, void **item);
+     ^
+networkdriver.c:131:4: warning: implicit declaration of function ‘nonblocking_get_packet’ [-Wimplicit-function-declaration]
+    if (nonblocking_get_packet(*fpds_ptr, &current_pd) != 1) { //If we fail to get pd from fpds
+    ^
+networkdriver.c:134:30: warning: passing argument 1 of ‘init_packet_descriptor’ from incompatible pointer type
+       init_packet_descriptor(&current_pd); //Reset pd before registering it to netdev
+                              ^
+In file included from networkdriver.c:19:0:
+packetdescriptor.h:30:6: note: expected ‘struct PacketDescriptor *’ but argument is of type ‘struct PacketDescriptor **’
+ void init_packet_descriptor(PacketDescriptor *pd);
+      ^
+networkdriver.c:135:51: warning: passing argument 2 of ‘register_receiving_packetdescriptor’ from incompatible pointer type
+       register_receiving_packetdescriptor(netdev, &current_pd); //Register packet with netdev
+                                                   ^
+In file included from networkdriver.c:24:0:
+networkdevice.h:38:6: note: expected ‘struct PacketDescriptor *’ but argument is of type ‘struct PacketDescriptor **’
+ void register_receiving_packetdescriptor(NetworkDevice *nd, PacketDescriptor *pd);
+      ^
+networkdriver.c:137:45: warning: passing argument 1 of ‘packet_descriptor_get_pid’ from incompatible pointer type
+          procID = packet_descriptor_get_pid(&filled_pd); //Find PID for Indexing
+                                             ^
+In file included from networkdriver.c:19:0:
+packetdescriptor.h:41:5: note: expected ‘struct PacketDescriptor *’ but argument is of type ‘struct PacketDescriptor **’
+ PID packet_descriptor_get_pid(PacketDescriptor *pd);
+     ^
+networkdriver.c:150:37: warning: passing argument 1 of ‘init_packet_descriptor’ from incompatible pointer type
+              init_packet_descriptor(&current_pd);
+                                     ^
+In file included from networkdriver.c:19:0:
+packetdescriptor.h:30:6: note: expected ‘struct PacketDescriptor *’ but argument is of type ‘struct PacketDescriptor **’
+ void init_packet_descriptor(PacketDescriptor *pd);
+      ^
+networkdriver.c:151:58: warning: passing argument 2 of ‘register_receiving_packetdescriptor’ from incompatible pointer type
+              register_receiving_packetdescriptor(netdev, &current_pd);
+                                                          ^
+In file included from networkdriver.c:24:0:
+networkdevice.h:38:6: note: expected ‘struct PacketDescriptor *’ but argument is of type ‘struct PacketDescriptor **’
+ void register_receiving_packetdescriptor(NetworkDevice *nd, PacketDescriptor *pd);
+      ^
+networkdriver.c: In function ‘nonblocking_get_packet’:
+networkdriver.c:193:45: warning: passing argument 2 of ‘nonblockingReadBB’ from incompatible pointer type
+  return nonblockingReadBB(bufferArray[pid], pd);
+                                             ^
+In file included from networkdriver.c:27:0:
+BoundedBuffer.h:33:5: note: expected ‘void **’ but argument is of type ‘struct PacketDescriptor **’
+ int nonblockingReadBB(BoundedBuffer *bb, void **item);
+     ^
+gcc -o mydemo -W -Wall -pedantic -g BoundedBuffer.o diagnostics.o fakeapplications.o freepacketdescriptorstore.o generic_queue.o networkdevice.o networkdriver.o packetdescriptor.o packetdescriptorcreator.o testharness.o -lpthread
