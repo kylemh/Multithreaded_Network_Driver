@@ -1,4 +1,4 @@
-CFLAGS=-W -Wall -pedantic -g
+CFLAGS=-Wall -Wpedantic -g
 #CFLAGS=-W -Wall -pedantic
 OBJECTS=BoundedBuffer.o diagnostics.o fakeapplications.o \
         freepacketdescriptorstore.o generic_queue.o \

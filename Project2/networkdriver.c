@@ -53,7 +53,7 @@ void init_network_driver(NetworkDevice *nd,
 	pthread_t receiveThread;
 
 	//To catch packets as soon as they send.
-	PacketDescriptor *pd;
+	PacketDescriptor* pd;
 
     /* Create Free Packet Descriptor Store */
 	fpds = create_fpds();
@@ -71,7 +71,7 @@ void init_network_driver(NetworkDevice *nd,
 	}
 	recPool = createBB(RECPOOLSIZE);
 	for (i = 0; i < RECPOOLSIZE; i++) {
-		blocking_get_pd(fpds, **pd);
+		blocking_get_pd(fpds, &pd);
 		blockingWriteBB(recPool, pd);
 	}
 
