@@ -133,6 +133,7 @@ static void* receive_thread()
 			}
 		    init_packet_descriptor(&current_pd); //Reset pd before registering it to netdev
 		    register_receiving_packetdescriptor(netdev, &current_pd); //Register packet with netdev
+		    
 	        procID = packet_descriptor_get_pid(&filled_pd); //Find PID for Indexing
 		    if (nonblockingWriteBB(bufferArray[procID], filled_pd) != 1) {
 				DIAGNOSTICS("[DRIVER> Warning: Application(%u) Packet Store full, discarding data.\n", procID);
