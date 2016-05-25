@@ -31,10 +31,12 @@ static void* send_thread();
 static void* receive_thread();
 
 #define BUFFERSIZE 10
+#define RECPOOLSIZE 5
+#define RECIEVE_BUFFERSIZE 2
 
 FreePacketDescriptorStore **fpds_ptr;
 NetworkDevice *netdev;
-BoundedBuffer *applicationBuffer[MAX_PID];
+BoundedBuffer *bufferArray[MAX_PID+1];
 BoundedBuffer *sendQueue;
 BoundedBuffer *recPool;
 
@@ -43,25 +45,33 @@ void init_network_driver(NetworkDevice *nd,
 						 unsigned long mem_length, 
 						 FreePacketDescriptorStore **fpds_ptr) 
 {
-	//Initiliaze Device
-	netdev = nd; //Assign network device from argument.
-
-	pthread_t sendThread;
-	pthread_t receiveThread;
+	PacketDescriptor pd; //To catch packets as soon as they send.
 
     /* Create Free Packet Descriptor Store */
 	*fpds_ptr = create_fpds();
 
     /* Load FPDS with packet descriptors constructed from mem_start/mem_length */
-	create_free_packet_descriptors(*fpds_ptr, mem_start, mem_length);
+	int created;
+	created = create_free_packet_descriptors(*fpds_ptr, mem_start, mem_length);
 
     /* Create buffers required by your thread[s] */ 
     int i;
-	for(i = 0; i <= (MAX_PID + 1); i++) {
-        applicationBuffer[i] = createBB(BUFFERSIZE);
+    sendQueue = createBB(BUFFERSIZE);
+	for(i = 0; i <= MAX_PID; i++) {
+        bufferArray[i] = createBB(RECIEVE_BUFFERSIZE);
 	}
-	sendQueue = createBB(BUFFERSIZE);
-	recPool = createBB(BUFFERSIZE);
+	recPool = createBB(RECPOOLSIZE);
+	for(i = 0; i < RECPOOLSIZE; i++) {
+		blocking_get_pd(*fpds_ptr, &pd);
+		blockingWriteBB(recPool, pd)
+	}
+
+	//Initiliaze Device
+	netdev = nd; //Assign network device from argument.
+
+	//Initialize Threads before creation
+	pthread_t sendThread;
+	pthread_t receiveThread;
 
     /* Create Threads */
     pthread_create(&sendThread, NULL, send_thread, NULL);
@@ -123,7 +133,7 @@ static void* receive_thread()
 		    init_packet_descriptor(&current_pd); //Reset pd before registering it to netdev
 		    register_receiving_packetdescriptor(netdev, &current_pd); //Register packet with netdev
 	        procID = packet_descriptor_get_pid(&filled_pd); //Find PID for Indexing
-		    if (nonblockingWriteBB(applicationBuffer[procID], filled_pd) != 1) {
+		    if (nonblockingWriteBB(bufferArray[procID], filled_pd) != 1) {
 				DIAGNOSTICS("[DRIVER> Warning: Application(%u) Packet Store full, discarding data.\n", procID);
 				if (nonblockingWriteBB(recPool, filled_pd) != 1) { //Can't get the packet from the receive pool...
 					if (nonblocking_put_pd(*fpds_ptr, filled_pd) != 1) { //Can't return packet to fpds
@@ -167,7 +177,7 @@ int nonblocking_send_packet(PacketDescriptor *pd)
  */
 void blocking_get_packet(PacketDescriptor **pd, PID pid) 
 {
-	*pd = blockingReadBB(applicationBuffer[pid]);
+	*pd = blockingReadBB(bufferArray[pid]);
 	return;
 } 
 
@@ -178,5 +188,5 @@ void blocking_get_packet(PacketDescriptor **pd, PID pid)
  */
 int nonblocking_get_packet(PacketDescriptor **pd, PID pid) 
 {
-	return nonblockingReadBB(applicationBuffer[pid], pd);
+	return nonblockingReadBB(bufferArray[pid], pd);
 }
