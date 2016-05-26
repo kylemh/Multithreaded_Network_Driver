@@ -115,7 +115,7 @@ static void* receive_thread()
 	PacketDescriptor* current_pd;
 	PacketDescriptor* filled_pd;
     PID procID;
-	
+
     /* First, receive the thread as fast as possible to allow work to continue */
     blocking_get_pd(fpds, &current_pd); // Prepare packet from store
     init_packet_descriptor(current_pd); // Reset packet descriptor before registering it to device.
@@ -125,7 +125,7 @@ static void* receive_thread()
     while(1) {
     	await_incoming_packet(netdev); //Waits until pd filled with data
         filled_pd = current_pd; //Packet Descriptor is now filled.
-		if (nonblockingReadBB(recPool, &current_pd) == 1) { //If there's nothing waiting in the receive pool
+		if (nonblockingReadBB(recPool, &current_pd) == 1) { //Something is in the recPool
 		    init_packet_descriptor(current_pd); //Resets current_pd - it is now empty
 			register_receiving_packetdescriptor(netdev, current_pd); //Tell the netdev that current_pd is empty
 			procID = packet_descriptor_get_pid(filled_pd); //Find process ID for indexing purposes (0-10)			    	
@@ -135,7 +135,19 @@ static void* receive_thread()
 			    	DIAGNOSTICS("[DRIVER> Error? Cannot return Packet Descriptor to store\n");
 				}
 			}
+		} else if (nonblocking_get_pd(fpds, &current_pd) { //Something is NOT in the recPool
+			init_packet_descriptor(current_pd); //Resets current_pd - it is now empty
+			register_receiving_packetdescriptor(netdev, current_pd); //Tell the netdev that current_pd is empty
+			procID = packet_descriptor_get_pid(filled_pd); //Find process ID for indexing purposes (0-10)			    	
+			if (nonblockingWriteBB(bufferArray[procID], filled_pd) != 1) { //Data from packet fails to write
+				DIAGNOSTICS("[DRIVER> Warning: bufferArray(%u) - Packet Store full, discarding data.\n", procID);
+				if (nonblocking_put_pd(fpds, filled_pd) != 1) { //Can't return packet to fpds
+			    	DIAGNOSTICS("[DRIVER> Error? Cannot return Packet Descriptor to store\n");
+				}
+			}
 		} else {
+			PRINTF("I GOT HERE");
+			usleep(5);
 			if (nonblocking_put_pd != 1) { //Can't return packet to fpds
 				DIAGNOSTICS("[DRIVER> Warning: Cannot return Packet Descript to fpds")
 			}
