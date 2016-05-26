@@ -135,7 +135,7 @@ static void* receive_thread()
 			    	DIAGNOSTICS("[DRIVER> Error? Cannot return Packet Descriptor to store\n");
 				}
 			}
-		} else if (nonblocking_get_pd(fpds, &current_pd) { //Something is NOT in the recPool
+		} else if (nonblocking_get_pd(fpds, &current_pd)) { //Something is NOT in the recPool
 			init_packet_descriptor(current_pd); //Resets current_pd - it is now empty
 			register_receiving_packetdescriptor(netdev, current_pd); //Tell the netdev that current_pd is empty
 			procID = packet_descriptor_get_pid(filled_pd); //Find process ID for indexing purposes (0-10)			    	
@@ -146,10 +146,10 @@ static void* receive_thread()
 				}
 			}
 		} else {
-			PRINTF("I GOT HERE");
+			DIAGNOSTICS("I GOT HERE");
 			usleep(5);
-			if (nonblocking_put_pd != 1) { //Can't return packet to fpds
-				DIAGNOSTICS("[DRIVER> Warning: Cannot return Packet Descript to fpds")
+			if (nonblocking_put_pd(fpds, filled_pd) != 1) { //Can't return packet to fpds
+				DIAGNOSTICS("[DRIVER> Warning: Cannot return Packet Descript to fpds");
 			}
 		    printf("[DRIVER> Warning: No replacement Packet Descriptor, discarding data.\n");
 		    current_pd = filled_pd;
