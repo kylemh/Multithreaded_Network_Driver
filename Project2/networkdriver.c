@@ -136,6 +136,9 @@ static void* receive_thread()
 				}
 			}
 		} else {
+			if (nonblocking_put_pd != 1) { //Can't return packet to fpds
+				DIAGNOSTICS("[DRIVER> Warning: Cannot return Packet Descript to fpds")
+			}
 		    printf("[DRIVER> Warning: No replacement Packet Descriptor, discarding data.\n");
 		    current_pd = filled_pd;
             init_packet_descriptor(current_pd);
