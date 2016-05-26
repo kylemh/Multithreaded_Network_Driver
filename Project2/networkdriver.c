@@ -44,7 +44,8 @@ void init_network_driver(NetworkDevice *nd,
 						 void *mem_start, 
 						 unsigned long mem_length, 
 						 FreePacketDescriptorStore **fpds_ptr) 
-{
+{	int i;
+
 	//Initiliaze Device
 	netdev = nd; //Assign network device from argument.
 
@@ -60,11 +61,9 @@ void init_network_driver(NetworkDevice *nd,
 	*fpds_ptr = fpds;
 
     /* Load FPDS with packet descriptors constructed from mem_start/mem_length */
-	int created;
-	created = create_free_packet_descriptors(fpds, mem_start, mem_length);
+	create_free_packet_descriptors(fpds, mem_start, mem_length);
 
     /* Create buffers required by your thread[s] */ 
-    int i;
     sendQueue = createBB(BUFFERSIZE);
 	for (i = 0; i <= MAX_PID; i++) {
         bufferArray[i] = createBB(RECIEVE_BUFFERSIZE);
@@ -86,11 +85,12 @@ void init_network_driver(NetworkDevice *nd,
  */
 static void* send_thread()
 {
+	int sendLimit = 5;
+	int i;
 	PacketDescriptor* temppd;
 	while (1) {
 		temppd = (PacketDescriptor*)blockingReadBB(sendQueue);
-		int sendLimit = 5; //Arbitrarily set
-		int i;
+		
 		for (i = 0; i < sendLimit; i++) { // Attempt to send 5 times
 			if ((send_packet(netdev, temppd)) == 1) { // If received, break.
 				DIAGNOSTICS("[DRIVER> Info: Sent a packet after %d tries", i);
