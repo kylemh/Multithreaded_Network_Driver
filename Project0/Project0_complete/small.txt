@@ -1,0 +1,12 @@
+05/11/2002 www.intel.com
+12/12/2002 www.dcs.gla.ac.uk
+05/11/2003 www.mit.edu
+31/12/2002 www.cms.rgu.ac.uk
+25/12/2001 www.informatik.tum.de
+01/04/2002 www.wiley.co.uk
+01/01/2003 www.fiat.it
+14/02/2002 www.valentine.com
+01/03/2002 www.acme.co.uk
+01/01/2002 www.comp.stand.ac.uk
+28/02/2002 www.renault.fr
+30/07/2002 www.siemens.de

@@ -1,0 +1,1 @@
+Kyle HolmbergCIS 415 - Operating SystemsProject 0Issues1) Using Mac OS X 10.11.4, I was unable to utilize valgrind for memory leaks.2) My output is ordered alphabetically by TLD not by proportion of counts as expected
