@@ -1,7 +1,0 @@
-Kyle Holmberg
-CIS 415 - Operating Systems
-Project 1
-
-Issues
-1) int fd = open(char *path, int oflags) returned -1 always. I could not figure out and so I could not test my way to accessing relevant information within stat, statm, status, or mem.
-2) Had my file opened, I may have had difficulty in determining the proper way to access the relevant information.

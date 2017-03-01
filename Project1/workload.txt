@@ -1,5 +1,0 @@
-pwd
-sleep 5
-which ping
-whoami
-echo "This is the last of 5 commands."
